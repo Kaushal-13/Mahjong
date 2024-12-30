@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <textarea id="chat-box" rows="10" cols="50" readonly></textarea>
+    <br>
+    <input type="text" id="message" placeholder="Enter your message">
+    <button id="send">Send</button>
+
+    <script>
+        let ws;
+        let username;
+        let roomId;
+
+        // Parse query parameters from the URL
+        const params = new URLSearchParams(window.location.search);
+        username = params.get("username") || "Anonymous"; // Get username or default to "Anonymous"
+        roomId = params.get("roomId"); // Get room ID
+
+        if (!roomId) {
+            alert("Room ID is missing. Redirecting to Sign In...");
+            window.location.href = "signin.html"; // Redirect to signin if room ID is missing
+        }
+
+        // Create WebSocket connection when the page loads
+        ws = new WebSocket(`ws://127.0.0.1:8000/rooms/${roomId}/messages/${username}`);
+
+        // When a message is received
+        ws.onmessage = (event) => {
+            const chatBox = document.getElementById("chat-box");
+            const data = JSON.parse(event.data);
+
+            // Append the message to the chat box
+            if (!data.user_id) {
+                chatBox.value += `${data.message}\n`;
+            }
+            else {
+                chatBox.value += `${data.user_id}: ${data.message}\n`;
+            }
+                
+        };
+
+        // Handle sending messages
+        document.getElementById("send").onclick = () => {
+            const message = document.getElementById("message").value;
+
+            if (message.trim()) {
+                ws.send(message);
+                document.getElementById("message").value = ""; // Clear the message field
+            }
+        };
+    </script>
+</body>
+</html>

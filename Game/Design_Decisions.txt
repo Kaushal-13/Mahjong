@@ -1,0 +1,2 @@
+To replay games we would have to store the entire game array instead of this we can only store the seed through which the array was created,
+This seed would be stored in the gamestate object and used whenever necessary.

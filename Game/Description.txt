@@ -1,1 +1,27 @@
 This folder will be implementing the game states etc.
+
+Tile Representation : 
+B -> Bamboo
+C -> characters
+D -> Dots
+W -> Winds  
+        -> NEWS for directions
+
+Dr -> Dragon
+    -> Color (R,G,W)
+
+So basically red Dragon is DrR.
+And East Wind is WE.
+And 9 of Bamboos is B9
+
+Basically to deal with moves we can make an engine of sorts that does the following : 
+
+Just some maths let f be the update function then f takes two variables the game state and the move
+-> The move is a dynamic tuple for now until we can fixate as to what we can do with it next.
+move -> (move_type -> discard stuff like card id etc.)
+
+Core Functionality of the game.
+Game goes in 3 steps : 
+    # FOr now not implementing the wait part .
+    Draw -> Discard -> Wait -> Draw
+
